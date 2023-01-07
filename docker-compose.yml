@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+    spotify-readme:
+        build: .
+        command: gunicorn dynamic_banner_proj.wsgi -b 0.0.0.0:8000
+        ports:
+            - "8000:8000"
+        volumes:
+            - .:/dynamic_readme_banner
+volumes:
+  persistent:
