@@ -109,6 +109,14 @@
 
       .logo path {
         stroke-dasharray: 1000;
+        stroke-dashoffset: 1000;
+        animation: dash 7s cubic-bezier(.5, .2, .3, 1) alternate infinite;
+      }
+
+      @keyframes dash {
+        to {
+          stroke-dashoffset: 0;
+        }
       }
 
     </style>
