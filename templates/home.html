@@ -4,6 +4,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800" height="250">
   <!--Works like a body-->
   <foreignObject width="800" height="250">
+    <div xmlns="http://www.w3.org/1999/xhtml">
     <style>
       @font-face {
         font-family: 'bold';
@@ -107,7 +108,6 @@
       }
 
     </style>
-    <div xmlns="http://www.w3.org/1999/xhtml">
       <!--Background-->
       <div class="background">
         <svg width="800" height="250" viewBox="0 0 800 250" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo">
@@ -155,7 +155,7 @@
       </div>
       <div class="work">
         <div class="work-section">
-          <img src="{% static 'images/icon_1.svg'%}" alt="Current Work" height="12.12px" width="15px" />
+          <img src="{{icon_1}}" alt="Current Work" height="12.12px" width="15px" />
           <div class="work-text">
             <h3>Current Work</h3>
             <p>{{proj_name}}</p>
