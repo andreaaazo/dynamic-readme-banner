@@ -1,25 +1,11 @@
 {
-    "version": 2,
     "builds": [{
-            "src": "dynamic_banner_proj/wsgi.py",
-            "use": "@vercel/python",
-            "config": { "maxLambdaSize": "15mb", "runtime": "python3.10" }
-        },
-        {
-            "src": "build_files.sh",
-            "use": "@vercel/static-build",
-            "config": {
-                "distDir": "staticfiles_build"
-            }
-        }
-    ],
+        "src": "dynamic_banner_proj/wsgi.py",
+        "use": "@ardnt/vercel-python-wsgi",
+        "config": { "maxLambdaSize": "15mb" }
+    }],
     "routes": [{
-            "src": "/static/(.*)",
-            "dest": "/static/$1"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "dynamic_banner_proj/wsgi.py"
-        }
-    ]
+        "src": "/(.*)",
+        "dest": "dynamic_banner_proj/wsgi.py"
+    }]
 }
