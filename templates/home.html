@@ -56,6 +56,10 @@
           background: linear-gradient(0deg, rgba(255, 255, 255, 0.27) 0%, rgba(255, 255, 255, 0.27) 100%), #040F16;
         }
 
+        .widget:hover .widget-header {
+          background: #6b7b91;
+        }
+
         .widget-header {
           padding: 8px;
           justify-content: space-between;
@@ -97,13 +101,47 @@
           background: #040F16;
         }
 
+        .rectangle-1 {
+          animation-name: rectangle-1;
+          animation-duration: 2s;
+          animation-timing-function: cubic-bezier(.25,.1,.25,1);
+          animation-iteration-count: infinite;
+          animation-direction: alternate;
+        }
+
+        .rectangle-2 {
+          animation-name: rectangle-2;
+          animation-duration: 2s;
+          animation-delay: 1s;
+          animation-timing-function: cubic-bezier(.25,.1,.25,1);
+          animation-iteration-count: infinite;
+          animation-direction: alternate;
+        }
+
+        @keyframes rectangle-1 {
+          0% {
+            transform: translate(0px, 0px)
+          }
+          100% {
+            transform: translate(0px, 8px)
+          }
+        }
+        @keyframes rectangle-2 {
+          0% {
+            transform: translate(0px, 0px)
+          }
+          100% {
+            transform: translate(0px, -8px)
+          }
+        }
+        
       </style>
       <div class="col-2">
         <svg width="163" height="112" viewBox="0 0 163 112" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M74.0855 73.6625L44.6201 0H29.8883L0.422974 73.6625H15.1548L37.2534 18.4152L59.3537 73.6625H74.0855Z" fill="#FBFBFF"/>
           <path d="M125.561 44.1989C129.629 44.1989 132.928 40.9007 132.928 36.8321C132.928 32.7635 129.629 29.4653 125.561 29.4653C121.492 29.4653 118.194 32.7635 118.194 36.8321C118.194 40.9007 121.492 44.1989 125.561 44.1989Z" fill="#828DA1"/>
-          <path d="M162.495 58.9308H88.8329V73.6626H162.495V58.9308Z" fill="#FBFBFF"/>
-          <path d="M162.495 0H88.8328V14.7318H162.495V0Z" fill="#FBFBFF"/>
+          <path d="M162.495 58.9308H88.8329V73.6626H162.495V58.9308Z" fill="#FBFBFF" class="rectangle-2"/>
+          <path d="M162.495 0H88.8328V14.7318H162.495V0Z" fill="#FBFBFF" class="rectangle-1"/>
           <path d="M10.189 96.8088L4.42898 111.61H0.422974L8.29673 92.5229H12.1362L19.955 111.61H15.9756L10.189 96.8088Z" fill="#FBFBFF"/>
           <path d="M21.0127 97.6982H24.3508V98.7276C25.2686 97.8648 26.771 97.3085 28.1352 97.3085C31.9463 97.3085 34.4782 99.5621 34.4782 102.957V111.61H31.1401V103.347C31.1401 101.483 29.7776 100.258 27.7455 100.258C25.7133 100.258 24.3508 101.483 24.3508 103.347V111.61H21.0127V97.6982Z" fill="#FBFBFF"/>
           <path d="M36.2039 104.654C36.2039 100.258 39.1538 97.3085 43.5496 97.3085C45.2469 97.3085 47.1109 98.088 48.1686 99.2291V92.5229H51.5066V111.61H48.1686V110.079C47.1109 111.22 45.2469 112 43.5496 112C39.1538 112 36.2039 109.05 36.2039 104.654ZM48.1686 104.654C48.1686 102.011 46.4429 100.258 43.8844 100.258C41.3259 100.258 39.5436 102.011 39.5436 104.654C39.5436 107.298 41.2692 109.05 43.8844 109.05C46.4995 109.05 48.1686 107.298 48.1686 104.654Z" fill="#FBFBFF"/>
