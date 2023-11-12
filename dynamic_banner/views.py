@@ -16,15 +16,13 @@ class TextRenderer(View):
         WAKA_KEY = os.environ.get("WAKATIME_API_KEY")
 
         # Get data in ISO 8601
-        last_commit = requests.get(
-            f"https://wakatime.com/api/v1/users/current/projects?api_key={WAKA_KEY}"
-        ).json()["data"][0]["last_heartbeat_at"]
-
-        # Convert in human readable day
-        print(last_commit)
-        last_commit_day = datetime.fromisoformat("2026-10-12T19:42:52Z").strftime(
-            "%-d %b"
-        )
+        last_commit_day = datetime.fromisoformat(
+            str(
+                requests.get(
+                    f"https://wakatime.com/api/v1/users/current/projects?api_key={WAKA_KEY}"
+                ).json()["data"][0]["last_heartbeat_at"]
+            ).replace("Z", "+00:00")
+        ).strftime("%-d %b")
 
         # Get all time coding
         all_time_coding = round(
