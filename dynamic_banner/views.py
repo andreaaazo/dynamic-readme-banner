@@ -1,7 +1,12 @@
-from django.shortcuts import render
-from django.views.generic import View
 import requests
 import os
+
+from django.shortcuts import render
+from django.views.generic import View
+from django.utils.safestring import mark_safe
+
+from dynamic_banner_proj.settings import BASE_DIR
+
 from datetime import datetime
 
 
@@ -10,28 +15,57 @@ class TextRenderer(View):
     def get(self, request, *args, **kwargs):
         WAKA_KEY = os.environ.get("WAKATIME_API_KEY")
 
-        wakatime_stats = requests.get(
-            f"https://wakatime.com/api/v1/users/current/projects?api_key={WAKA_KEY}"
-        ).json()
-        wakatime_all_time_stats = requests.get(
-            f"https://wakatime.com/api/v1/users/current/all_time_since_today?api_key={WAKA_KEY}"
-        ).json()
+        # Get data in ISO 8601 and convert in human readable
+        last_commit_day = datetime.fromisoformat(
+            requests.get(
+                f"https://wakatime.com/api/v1/users/current/projects?api_key={WAKA_KEY}"
+            ).json()["data"][0]["last_heartbeat_at"]
+        ).strftime("%-d %b")
 
-        base64Icon1 = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgOCA4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8bWFzayBpZD0ibWFzazBfMl81NCIgc3R5bGU9Im1hc2stdHlwZTphbHBoYSIgbWFza1VuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeD0iMCIgeT0iMCIgd2lkdGg9IjgiIGhlaWdodD0iOCI+CjxyZWN0IHdpZHRoPSI4IiBoZWlnaHQ9IjgiIGZpbGw9IiNEOUQ5RDkiLz4KPC9tYXNrPgo8ZyBtYXNrPSJ1cmwoI21hc2swXzJfNTQpIj4KPHBhdGggZD0iTTEuNDM1ODIgNi44MzMzQzEuMjY3NDQgNi44MzMzIDEuMTI0OTIgNi43NzQ5NyAxLjAwODI1IDYuNjU4M0MwLjg5MTU4NSA2LjU0MTYzIDAuODMzMjUyIDYuMzk5MTEgMC44MzMyNTIgNi4yMzA3M1YyLjc2OTIyQzAuODMzMjUyIDIuNjAwODQgMC44OTE1ODUgMi40NTgzMiAxLjAwODI1IDIuMzQxNjVDMS4xMjQ5MiAyLjIyNDk4IDEuMjY3NDQgMi4xNjY2NSAxLjQzNTgyIDIuMTY2NjVIMi44MzMyNVYxLjYwMjU2QzIuODMzMjUgMS40MzQxOSAyLjg5MTU5IDEuMjkxNjcgMy4wMDgyNSAxLjE3NUMzLjEyNDkyIDEuMDU4MzMgMy4yNjc0NCAxIDMuNDM1ODIgMUg0LjU2NEM0LjczMjM4IDEgNC44NzQ5IDEuMDU4MzMgNC45OTE1NyAxLjE3NUM1LjEwODI0IDEuMjkxNjcgNS4xNjY1NyAxLjQzNDE5IDUuMTY2NTcgMS42MDI1NlYyLjE2NjY1SDYuNTY0QzYuNzMyMzggMi4xNjY2NSA2Ljg3NDkgMi4yMjQ5OCA2Ljk5MTU3IDIuMzQxNjVDNy4xMDgyNCAyLjQ1ODMyIDcuMTY2NTcgMi42MDA4NCA3LjE2NjU3IDIuNzY5MjJWNi4yMzA3M0M3LjE2NjU3IDYuMzk5MTEgNy4xMDgyNCA2LjU0MTYzIDYuOTkxNTcgNi42NTgzQzYuODc0OSA2Ljc3NDk3IDYuNzMyMzggNi44MzMzIDYuNTY0IDYuODMzM0gxLjQzNTgyWk0xLjQzNTgyIDYuMzMzMzFINi41NjRDNi41ODk2NSA2LjMzMzMxIDYuNjEzMTYgNi4zMjI2MiA2LjYzNDUzIDYuMzAxMjZDNi42NTU4OSA2LjI3OTg5IDYuNjY2NTggNi4yNTYzOCA2LjY2NjU4IDYuMjMwNzNWMi43NjkyMkM2LjY2NjU4IDIuNzQzNTcgNi42NTU4OSAyLjcyMDA2IDYuNjM0NTMgMi42OTg2OUM2LjYxMzE2IDIuNjc3MzMgNi41ODk2NSAyLjY2NjY0IDYuNTY0IDIuNjY2NjRIMS40MzU4MkMxLjQxMDE3IDIuNjY2NjQgMS4zODY2NyAyLjY3NzMzIDEuMzY1MjkgMi42OTg2OUMxLjM0MzkzIDIuNzIwMDYgMS4zMzMyNCAyLjc0MzU3IDEuMzMzMjQgMi43NjkyMlY2LjIzMDczQzEuMzMzMjQgNi4yNTYzOCAxLjM0MzkzIDYuMjc5ODkgMS4zNjUyOSA2LjMwMTI2QzEuMzg2NjcgNi4zMjI2MiAxLjQxMDE3IDYuMzMzMzEgMS40MzU4MiA2LjMzMzMxWk0zLjMzMzI0IDIuMTY2NjVINC42NjY1OFYxLjYwMjU2QzQuNjY2NTggMS41NzY5MSA0LjY1NTg5IDEuNTUzNDEgNC42MzQ1MyAxLjUzMjA0QzQuNjEzMTUgMS41MTA2NyA0LjU4OTY1IDEuNDk5OTggNC41NjQgMS40OTk5OEgzLjQzNTgyQzMuNDEwMTcgMS40OTk5OCAzLjM4NjY3IDEuNTEwNjcgMy4zNjUyOSAxLjUzMjA0QzMuMzQzOTMgMS41NTM0MSAzLjMzMzI0IDEuNTc2OTEgMy4zMzMyNCAxLjYwMjU2VjIuMTY2NjVaIiBmaWxsPSIjRkJGQkZGIi8+CjwvZz4KPC9zdmc+Cg=="
+        # Get all time coding
+        all_time_coding = round(
+            float(
+                requests.get(
+                    f"https://wakatime.com/api/v1/users/current/all_time_since_today?api_key={WAKA_KEY}"
+                ).json()["data"]["decimal"]
+            )
+        )
 
-        base64Icon2 = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgOCA4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8bWFzayBpZD0ibWFzazBfMl8xMjEiIHN0eWxlPSJtYXNrLXR5cGU6YWxwaGEiIG1hc2tVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjAiIHk9IjAiIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjRDlEOUQ5Ii8+CjwvbWFzaz4KPGcgbWFzaz0idXJsKCNtYXNrMF8yXzEyMSkiPgo8cGF0aCBkPSJNMi4xNjY2NiA2LjQ5OTk4QzEuNzA1OTggNi40OTk5OCAxLjMxMzAzIDYuMzQwMTggMC45ODc4MTcgNi4wMjA1OEMwLjY2MjYwNiA1LjcwMDk4IDAuNSA1LjMxMDM1IDAuNSA0Ljg0ODcxQzAuNSA0LjQzNDYxIDAuNjMzMjI4IDQuMDcwNCAwLjg5OTY4MyAzLjc1NjA4QzEuMTY2MTQgMy40NDE3NyAxLjQ5NjU5IDMuMjU1NTYgMS44OTEwMyAzLjE5NzQ0QzEuOTk3ODYgMi42OTkxNSAyLjI0ODQgMi4yOTE2NyAyLjY0MjYzIDEuOTc1QzMuMDM2ODUgMS42NTgzMyAzLjQ4OTMxIDEuNSAzLjk5OTk5IDEuNUM0LjYwMzU2IDEuNSA1LjExNTU2IDEuNzEwMjIgNS41MzU5OSAyLjEzMDY2QzUuOTU2NDMgMi41NTEwOSA2LjE2NjY1IDMuMDYzMDkgNi4xNjY2NSAzLjY2NjY2VjMuODMzMzNINi4yNjkyMkM2LjYyMDUgMy44NjA2OCA2LjkxMzQ0IDQuMDAxOTIgNy4xNDgwNiA0LjI1NzA1QzcuMzgyNjggNC41MTIxOCA3LjQ5OTk4IDQuODE1MzggNy40OTk5OCA1LjE2NjY2QzcuNDk5OTggNS41Mzg0NSA3LjM3MTc4IDUuODUzNjIgNy4xMTUzNyA2LjExMjE3QzYuODU4OTYgNi4zNzA3MSA2LjU0NDg2IDYuNDk5OTggNi4xNzMwNyA2LjQ5OTk4SDQuMzUyNTZDNC4xODQxOCA2LjQ5OTk4IDQuMDQxNjYgNi40NDE2NSAzLjkyNSA2LjMyNDk4QzMuODA4MzMgNi4yMDgzMiAzLjc1IDYuMDY1NzkgMy43NSA1Ljg5NzQyVjQuMDcxNzhMMy4xMzMzMyA0LjY3ODE5TDIuNzgyMDUgNC4zMzAxMkwzLjk5OTk5IDMuMTEyMThMNS4yMTc5MyA0LjMzMDEyTDQuODY2NjYgNC42NzgxOUw0LjI0OTk4IDQuMDcxNzhWNS44OTc0MkM0LjI0OTk4IDUuOTIzMDYgNC4yNjA2NyA1Ljk0NjU3IDQuMjgyMDQgNS45Njc5NEM0LjMwMzQxIDUuOTg5MzEgNC4zMjY5MSA1Ljk5OTk5IDQuMzUyNTYgNS45OTk5OUg2LjE2NjY2QzYuMzk5OTkgNS45OTk5OSA2LjU5NzIxIDUuOTE5NDQgNi43NTgzMyA1Ljc1ODMzQzYuOTE5NDQgNS41OTcyMSA2Ljk5OTk5IDUuMzk5OTkgNi45OTk5OSA1LjE2NjY2QzYuOTk5OTkgNC45MzMzMyA2LjkxOTQ0IDQuNzM2MSA2Ljc1ODMzIDQuNTc0OTlDNi41OTcyMSA0LjQxMzg4IDYuMzk5OTkgNC4zMzMzMyA2LjE2NjY2IDQuMzMzMzNINS42NjY2NlYzLjY2NjY2QzUuNjY2NjYgMy4yMDU1NSA1LjUwNDE2IDIuODEyNDkgNS4xNzkxNiAyLjQ4NzQ5QzQuODU0MTYgMi4xNjI0OSA0LjQ2MTEgMS45OTk5OSAzLjk5OTk5IDEuOTk5OTlDMy41Mzg4OCAxLjk5OTk5IDMuMTQ1ODMgMi4xNjI0OSAyLjgyMDgzIDIuNDg3NDlDMi40OTU4MyAyLjgxMjQ5IDIuMzMzMzMgMy4yMDU1NSAyLjMzMzMzIDMuNjY2NjZIMi4xNjAyNUMxLjg0NDQ0IDMuNjY2NjYgMS41NzIxMSAzLjc4MDU1IDEuMzQzMjYgNC4wMDgzM0MxLjExNDQxIDQuMjM2MSAwLjk5OTk5MiA0LjUxMTEgMC45OTk5OTIgNC44MzMzM0MwLjk5OTk5MiA1LjE1NTU1IDEuMTEzODggNS40MzA1NSAxLjM0MTY2IDUuNjU4MzNDMS41Njk0NCA1Ljg4NjEgMS44NDQ0NCA1Ljk5OTk5IDIuMTY2NjYgNS45OTk5OUgyLjk5OTk5VjYuNDk5OThIMi4xNjY2NloiIGZpbGw9IiNGQkZCRkYiLz4KPC9nPgo8L3N2Zz4K"
+        # Get all fonts in base64
+        with open(
+            f"{BASE_DIR}/fonts/Sk-Modernist/regular.txt", "r"
+        ) as sk_modernist_regular, open(
+            f"{BASE_DIR}/fonts/Helvetica Neue/light.txt", "r"
+        ) as helvetica_neue_light:
+            fonts = {
+                "helvetica_neue": {
+                    "light": helvetica_neue_light.read(),
+                },
+                "sk_modernist": {
+                    "regular": sk_modernist_regular.read(),
+                },
+            }
+            helvetica_neue_light.close()
+            sk_modernist_regular.close()
 
-        base64Icon3 = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgOCA4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8bWFzayBpZD0ibWFzazBfMl8xMzciIHN0eWxlPSJtYXNrLXR5cGU6YWxwaGEiIG1hc2tVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjAiIHk9IjAiIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjRDlEOUQ5Ii8+CjwvbWFzaz4KPGcgbWFzaz0idXJsKCNtYXNrMF8yXzEzNykiPgo8cGF0aCBkPSJNMi42MzQ2MSA2LjY2NjY0SDUuMzY1MzhWNS42NjY2NEM1LjM2NTM4IDUuMjg3MTUgNS4yMzI2OCA0Ljk2MjU4IDQuOTY3MyA0LjY5MjkyQzQuNzAxOTIgNC40MjMyNiA0LjM3OTQ4IDQuMjg4NDMgMy45OTk5OSA0LjI4ODQzQzMuNjIwNSA0LjI4ODQzIDMuMjk4MDcgNC40MjMyNiAzLjAzMjY4IDQuNjkyOTJDMi43NjczIDQuOTYyNTggMi42MzQ2MSA1LjI4NzE1IDIuNjM0NjEgNS42NjY2NFY2LjY2NjY0Wk0zLjk5OTk5IDMuNzExNTFDNC4zNzk0OCAzLjcxMTUxIDQuNzAxOTIgMy41NzY2OCA0Ljk2NzMgMy4zMDcwMkM1LjIzMjY4IDMuMDM3MzcgNS4zNjUzOCAyLjcxMjc5IDUuMzY1MzggMi4zMzMzVjEuMzMzM0gyLjYzNDYxVjIuMzMzM0MyLjYzNDYxIDIuNzEyNzkgMi43NjczIDMuMDM3MzcgMy4wMzI2OCAzLjMwNzAyQzMuMjk4MDcgMy41NzY2OCAzLjYyMDUgMy43MTE1MSAzLjk5OTk5IDMuNzExNTFaTTEuNSA3LjE2NjYzVjYuNjY2NjRIMi4xMzQ2MlY1LjY2NjY0QzIuMTM0NjIgNS4yOTE0MiAyLjIzNzI5IDQuOTQ5ODYgMi40NDI2MyA0LjY0MTk1QzIuNjQ3OTggNC4zMzQwNSAyLjkyMDEgNC4xMjAwNSAzLjI1ODk5IDMuOTk5OTdDMi45MjAxIDMuODc3NzUgMi42NDc5OCAzLjY2MzIzIDIuNDQyNjMgMy4zNTYzOUMyLjIzNzI5IDMuMDQ5NTUgMi4xMzQ2MiAyLjcwODUyIDIuMTM0NjIgMi4zMzMzVjEuMzMzM0gxLjVWMC44MzMzMTNINi40OTk5OFYxLjMzMzNINS44NjUzN1YyLjMzMzNDNS44NjUzNyAyLjcwODUyIDUuNzYyNjkgMy4wNDk1NSA1LjU1NzM1IDMuMzU2MzlDNS4zNTIwMSAzLjY2MzIzIDUuMDc5ODkgMy44Nzc3NSA0Ljc0MDk5IDMuOTk5OTdDNS4wNzk4OSA0LjEyMDA1IDUuMzUyMDEgNC4zMzQwNSA1LjU1NzM1IDQuNjQxOTVDNS43NjI2OSA0Ljk0OTg2IDUuODY1MzcgNS4yOTE0MiA1Ljg2NTM3IDUuNjY2NjRWNi42NjY2NEg2LjQ5OTk4VjcuMTY2NjNIMS41WiIgZmlsbD0iI0ZCRkJGRiIvPgo8L2c+Cjwvc3ZnPgo="
+        # Get all images in base64
+        with open(f"{BASE_DIR}/images/background.svg", "r") as background_svg, open(
+            f"{BASE_DIR}/images/lettermark.svg", "r"
+        ) as lettermark_svg, open(f"{BASE_DIR}/images/logo.svg", "r") as logo_svg:
+            images = {
+                "background": mark_safe(background_svg.read()),
+                "lettermark": mark_safe(lettermark_svg.read()),
+                "logo": mark_safe(logo_svg.read()),
+            }
+            background_svg.close()
+            lettermark_svg.close()
+            logo_svg.close()
 
         context = {
-            "proj_name": wakatime_stats["data"][0]["name"],
-            "last_commit": wakatime_stats["data"][0][
-                "human_readable_last_heartbeat_at"
-            ],
-            "all_time_coding": wakatime_all_time_stats["data"]["text"],
-            "icon_1": base64Icon1,
-            "icon_2": base64Icon2,
-            "icon_3": base64Icon3,
+            "last_commit_day": last_commit_day,
+            "all_time_coding": all_time_coding,
+            "images": images,
+            "fonts": fonts,
         }
 
         return render(request, "home.html", context, content_type="image/svg+xml")
