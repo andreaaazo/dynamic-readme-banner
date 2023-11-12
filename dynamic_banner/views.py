@@ -21,7 +21,10 @@ class TextRenderer(View):
         ).json()["data"][0]["last_heartbeat_at"]
 
         # Convert in human readable day
-        last_commit_day = datetime.fromisoformat(last_commit).strftime("%-d %b")
+        print(last_commit)
+        last_commit_day = datetime.fromisoformat("2026-10-12T19:42:52Z").strftime(
+            "%-d %b"
+        )
 
         # Get all time coding
         all_time_coding = round(
