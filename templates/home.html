@@ -1,89 +1,88 @@
 <!--Init SVG-->
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="480" height="262">
-  <style>
-    @font-face {
-      font-family: "Sk-Modernist Regular";
-      src: url("{{fonts.sk_modernist.regular}}")
-    }
-
-    @font-face {
-      font-family: "Helvetica Neue Light";
-      src: url({{fonts.helvetica_neue.light}})
-    }
-
-    .body {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      padding: 32px;
-      gap: 32px;
-    }
-
-    .header {
-      display: flex;
-      width: 100%;
-      gap: 32px;
-    }
-
-    .background {
-      position: absolute;
-      z-index: -1;
-      top: 0;
-      left: 0;
-    }
-
-    .page {
-      position: relative;
-      background-color: #0C0C0D;
-    }
-
-    h1 {
-      font-family: "Sk-Modernist Regular";
-      margin: 0;
-      line-height: 150%;
-      font-size: 28.43px;
-      color: #F2F2F2;
-      font-weight: 400;
-    }
-
-    p {
-      font-family: "Helvetica Neue Light";
-      margin: 0;
-      line-height: 15px;
-      font-size: 12px;
-      color: #6C99D5;
-      font-weight: 300;
-    }
-
-    .stats {
-      display: flex;
-      gap: 32px;
-    }
-
-    .stat-widget {
-      display: flex;
-      padding: 8px 16px;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      flex: 1 0 0;
-      --b: 0.5px;   /* thickness of the border */
-      --c: #F2F2F2;   /* color of the border */
-      --w: 16px;  /* width of border */
-
-      --_g: #0000 90deg,var(--c) 0;
-      --_p: var(--w) var(--w) border-box no-repeat;
-      background:
-      conic-gradient(from 90deg  at top    var(--b) left  var(--b),var(--_g)) 0    0    / var(--_p),
-      conic-gradient(from 180deg at top    var(--b) right var(--b),var(--_g)) 100% 0    / var(--_p),
-      conic-gradient(from 0deg   at bottom var(--b) left  var(--b),var(--_g)) 0    100% / var(--_p),
-      conic-gradient(from -90deg at bottom var(--b) right var(--b),var(--_g)) 100% 100% / var(--_p);
-      }
-
-  </style>
   <!--Works like a body-->
   <foreignObject width="480" height="262" class="page">
     <div xmlns="http://www.w3.org/1999/xhtml" class="body">
+      <style>
+        @font-face {
+          font-family: "Sk-Modernist Regular";
+          src: url("{{fonts.sk_modernist.regular}}")
+        }
+
+        @font-face {
+          font-family: "Helvetica Neue Light";
+          src: url({{fonts.helvetica_neue.light}})
+        }
+
+        .body {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          padding: 32px;
+          gap: 32px;
+        }
+
+        .header {
+          display: flex;
+          width: 100%;
+          gap: 32px;
+        }
+
+        .background {
+          position: absolute;
+          z-index: -1;
+          top: 0;
+          left: 0;
+        }
+
+        .page {
+          position: relative;
+          background-color: #0C0C0D;
+        }
+
+        h1 {
+          font-family: "Sk-Modernist Regular";
+          margin: 0;
+          line-height: 150%;
+          font-size: 28.43px;
+          color: #F2F2F2;
+          font-weight: 400;
+        }
+
+        p {
+          font-family: "Helvetica Neue Light";
+          margin: 0;
+          line-height: 15px;
+          font-size: 12px;
+          color: #6C99D5;
+          font-weight: 300;
+        }
+
+        .stats {
+          display: flex;
+          gap: 32px;
+        }
+
+        .stat-widget {
+          display: flex;
+          padding: 8px 16px;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-start;
+          flex: 1 0 0;
+          --b: 0.5px;   /* thickness of the border */
+          --c: #F2F2F2;   /* color of the border */
+          --w: 16px;  /* width of border */
+
+          --_g: #0000 90deg,var(--c) 0;
+          --_p: var(--w) var(--w) border-box no-repeat;
+          background:
+          conic-gradient(from 90deg  at top    var(--b) left  var(--b),var(--_g)) 0    0    / var(--_p),
+          conic-gradient(from 180deg at top    var(--b) right var(--b),var(--_g)) 100% 0    / var(--_p),
+          conic-gradient(from 0deg   at bottom var(--b) left  var(--b),var(--_g)) 0    100% / var(--_p),
+          conic-gradient(from -90deg at bottom var(--b) right var(--b),var(--_g)) 100% 100% / var(--_p);
+        }
+      </style>
       {{images.background}}
       <div class="header">
         {{images.logo}}
@@ -99,7 +98,6 @@
           <p>All Time Coding</p>
         </div>
       </div>
-
     </div>
   </foreignObject>
 </svg>
