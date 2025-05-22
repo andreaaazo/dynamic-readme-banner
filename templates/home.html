@@ -37,7 +37,7 @@
 
         .page {
           position: relative;
-          background-color: black;
+          background-color: #07000C;
         }
 
         h1 {
@@ -45,7 +45,7 @@
           margin: 0;
           line-height: 150%;
           font-size: 28.43px;
-          color: #F2F2F2;
+          color: #FEFCFF;
           font-weight: 400;
         }
 
@@ -54,7 +54,7 @@
           margin: 0;
           line-height: 15px;
           font-size: 12px;
-          color: #6C99D5;
+          color: #CD6AFF;
           font-weight: 300;
         }
 
@@ -70,17 +70,20 @@
           justify-content: center;
           align-items: flex-start;
           flex: 1 0 0;
-          --b: 0.5px;   /* thickness of the border */
-          --c: #F2F2F2;   /* color of the border */
-          --w: 16px;  /* width of border */
+          --b: 0.5px;
+          /* thickness of the border */
+          --c: #FEFCFF;
+          /* color of the border */
+          --w: 16px;
+          /* width of border */
 
-          --_g: #0000 90deg,var(--c) 0;
+          --_g: #07000C 90deg, var(--c) 0;
           --_p: var(--w) var(--w) border-box no-repeat;
           background:
-          conic-gradient(from 90deg  at top    var(--b) left  var(--b),var(--_g)) 0    0    / var(--_p),
-          conic-gradient(from 180deg at top    var(--b) right var(--b),var(--_g)) 100% 0    / var(--_p),
-          conic-gradient(from 0deg   at bottom var(--b) left  var(--b),var(--_g)) 0    100% / var(--_p),
-          conic-gradient(from -90deg at bottom var(--b) right var(--b),var(--_g)) 100% 100% / var(--_p);
+            conic-gradient(from 90deg at top var(--b) left var(--b), var(--_g)) 0 0 / var(--_p),
+            conic-gradient(from 180deg at top var(--b) right var(--b), var(--_g)) 100% 0 / var(--_p),
+            conic-gradient(from 0deg at bottom var(--b) left var(--b), var(--_g)) 0 100% / var(--_p),
+            conic-gradient(from -90deg at bottom var(--b) right var(--b), var(--_g)) 100% 100% / var(--_p);
         }
       </style>
       {{images.background}}
